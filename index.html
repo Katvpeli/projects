@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Katrina Peli">
+  <title>BMI Calculator</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+    body {
+      background-color: #f7f7f7;
+      font-family: Arial, sans-serif;
+      text-align: center; 
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #008CBA;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #tabs {
+      margin: 0 auto; 
+      width: 80%;
+    }
+
+    .ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+      background-color: #008CBA;
+      color: white;
+    }
+
+    .ui-widget-header {
+      background-color: #008CBA;
+      color: white;
+      font-weight: bold;
+    }
+
+    .ui-widget-content {
+      background-color: white;
+      color: #333;
+    }
+
+    .label {
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #008CBA;
+    }
+
+    #categories {
+      margin: 0 auto;
+      width: 60%;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .pbmi {
+      color: red;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .pbmi2 {
+      color: green;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+  <script src="https://it411ajaxbmi8c2e.blob.core.windows.net/it411/BMICalcHelper.js"></script>
+  <!-- Start Script -->
+  <script>
+    $(document).ready(function() {
+      "use strict";
+      $("#tabs").tabs(); // For multiple tabs -metric/imperial
+      $("#spinner").spinner({ // spinner
+        min: 1
+      });
+
+      $("#heightInFeet").selectmenu({ // select menu for heightInFeet
+        width: 100 // changes width of box
+      });
+
+      $("#heightInInches").selectmenu({ // select menu for heightInInches
+        width: 100 // changes width of box
+      });
+
+      // Metric BMI Calculator
+      $('#metricbmi').validate({ // validates metric calculator
+      });
+
+      $("#metricbmi").submit(function(event) { // start submit function for metricbmi
+        event.preventDefault(); // prevents going to new page
+
+        if (!$("#metricbmi").valid()) return; // if NOT VALID return
+        let weightInPounds = $("[name='weightInPounds']").val();
+        let heightInFeet = $("[name='heightInFeet']").val();
+        let heightInInches = $("[name='heightInInches']").val();
+        heightInInches = +(heightInFeet * 12) + +heightInInches;
+        let metricbmi = (weightInPounds * 703) / (heightInInches * heightInInches);
+        
+      $("#BMIMetricalc").val(metricbmi.toFixed(1)); // displays metric bmi after calculations
+      }); 
+      // Imperial BMI Calculator
+      $('#imperialbmi').validate({ 
+     });
+
+    $("#imperialbmi").submit(function(event) {
+    event.preventDefault();
+
+    if (!$("#imperialbmi").valid()) return; // if NOT VALID return
+    let weightInKilos = $("[name='weightInKilos']").val();
+    let heightInCentimeters = $("[name='heightInCentimeters']").val();
+    let heightInMeters = heightInCentimeters / 100;
+    let imperialbmi = weightInKilos / (heightInMeters * heightInMeters);
+    $("#BMIImperialcalc").val(imperialbmi.toFixed(1)); // displays imperial bmi after calculation
+  });
+});
+</script>
+</head>
+<body>
+  <p><a href="../home.html"><img src="../images/sftwear.png" alt=""></a></p>
+  <h1>Calculate Your BMI!</h1>
+  <div id="tabs">
+    <ul>
+      <li>
+        <a href="#metric">Metric</a>
+      </li>
+      <li>
+        <a href="#imperial">Imperial</a>
+      </li>
+    </ul>
+    <!-- Metric -->
+    <div id="metric">
+      <form id="metricbmi" name="metricbmi">
+        <fieldset>
+          <!-- height -->
+          <label class="label" for="height">Height:</label>
+          <select id="heightInFeet" name="heightInFeet">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option selected="selected">5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+          </select> Feet<br><br>
+          <select id="heightInInches" name="heightInInches">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option selected="selected">5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+          </select> Inches<br><br>
+    
+          <!-- weight -->
+          <label class="label" for="weightInPounds">Weight:</label>
+          <input class="required digits" id="weightInPounds" name="weightInPounds" size="4" title="Weight is required." type="number"> lbs
+          <br><br>
+          <!-- submit -->
+          <input id="calculateBMI" name="verify" type="submit" value="Calculate BMI">
+          <p>Your BMI:</p><input class="calculations" id="BMIMetricalc" readonly size="4" type="text">
+        </fieldset>
+      </form>
+    </div>
+    <!-- Imperial -->
+    <div id="imperial">
+      <form id="imperialbmi" name="imperialbmi">
+      <fieldset>
+      <!-- height -->
+      <label class="label" for="heightInCentimeters">Height:</label>
+      <input class="required digits" id="spinner" name="heightInCentimeters" size="4" title="Height is required." type="number"> Cm<br><br>
+      <!-- weight -->
+      <label class="label" for="weightInKilos">Weight:</label>
+      <input class="required digits" id="weightInKilos" name="weightInKilos" size="4" title="Weight is required." type="number">  Kg<br><br>
+          <!-- submit -->
+          <input id="calculateBMI" name="verify" type="submit" value="Calculate BMI">
+          <p>Your BMI: <input class="calculations" id="BMIImperialcalc" readonly size="10" type="text"></p>
+        </fieldset>
+      </form>
+    </div>
+    <!-- BMI categories -->
+    <div id="categories">
+      <h4>BMI Categories:</h4>
+      <p class="pbmi"><b>Underweight:</b> &lt;18.5</p>
+      <p class="pbmi2"><b>Normal weight:</b> 18.5–24.9</p>
+      <p class="pbmi"><b>Overweight:</b> 25–29.9</p>
+      <p class="pbmi2"><b>Obesity:</b> BMI of 30 or greater</p>
+    </div>
+    <!--return to home page-->
+   <a href="../home.html">Home</a>
+  </body>
+  </html>
+  
+  
+  
+  
